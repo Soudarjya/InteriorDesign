@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
+import { GoogleOAuthProvider, GoogleLogin,PhoneInput } from '@react-oauth/google';
 import PhoneInput from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
 
