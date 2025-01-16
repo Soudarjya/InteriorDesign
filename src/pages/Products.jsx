@@ -16,23 +16,23 @@ const Products = () => {
     return products.filter((product) => product.category === category);
   };
 
+  const fadeInUp = {
+    initial: { opacity: 0, y: 30 },
+    animate: { opacity: 1, y: 0 },
+    transition: {
+      duration: 0.6,
+      ease: [0.42, 0, 0.58, 1], // Smooth cubic bezier
+    },
+  };
+
   return (
-    <div className="pt-20 pb-12 mt-4 bg-[#F5F5DC]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-12"
-        >
-          <h1 className="text-4xl font-bold mb-4">Our Products</h1>
-          <p className="text-gray-600">
+    <div className="pt-20 pb-12 bg-[#F5F5DC]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h1 className="text-4xl font-bold mt-5 mb-3">Our Products</h1>
+          <p className="text-gray-600 mb-3">
             Discover our extensive collection of premium laminates
           </p>
-        </motion.div>
 
-        {/* Mobile Filter Button */}
         <div className="md:hidden mb-4">
           <button
             onClick={() => setShowFilters(!showFilters)}
@@ -45,10 +45,10 @@ const Products = () => {
 
         <div className="flex flex-col md:flex-row gap-8">
           {/* Filters */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
+          <div
+            // initial={{ opacity: 0, x: -20 }}
+            // animate={{ opacity: 1, x: 0 }}
+            // transition={{ duration: 0.8, ease: "easeInOut" }}
             className={`${
               showFilters ? "block" : "hidden"
             } md:block w-full md:w-64 bg-white p-4 rounded-lg shadow-md`}
@@ -69,25 +69,40 @@ const Products = () => {
                       ? "bg-gray-900 text-white"
                       : "hover:bg-gray-100"
                   }`}
+                  // initial={{ opacity: 0, x: -10 }}
+                  // animate={{ opacity: 1, x: 0 }}
+                  // transition={{ duration: 0.5 }}
                 >
                   {category.label}
                 </button>
               ))}
             </div>
-          </motion.div>
+          </div>
 
           {/* Product Grid */}
           <div className="flex-1">
-            <div
+            <motion.div
               ref={ref}
+              initial="hidden"
+              animate={inView ? "visible" : "hidden"}
+              variants={{
+                hidden: { opacity: 0, y: 20 },
+                visible: {
+                  opacity: 1,
+                  y: 0,
+                  transition: { staggerChildren: 0.1 },
+                },
+              }}
               className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
             >
-              {filterProducts(selectedCategory).map((product, index) => (
+              {filterProducts(selectedCategory).map((product) => (
                 <motion.div
                   key={product.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={inView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ duration: 0.8, delay: index * 0.1 }}
+                  variants={{
+                    hidden: { opacity: 0, y: 20 },
+                    visible: { opacity: 1, y: 0 },
+                  }}
+                  transition={{ duration: 0.8, ease: [0.42, 0, 0.58, 1] }}
                   className="group bg-gray-200 rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300"
                 >
                   <div className="relative overflow-hidden">
@@ -120,7 +135,7 @@ const Products = () => {
                   </div>
                 </motion.div>
               ))}
-            </div>
+            </motion.div>
           </div>
         </div>
       </div>
@@ -135,7 +150,6 @@ const categories = [
   { label: "Metallic", value: "metallic" },
   { label: "Abstract", value: "abstract" },
 ];
-
 const products = [
   {
     id: 1,
